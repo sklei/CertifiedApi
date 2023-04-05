@@ -1,6 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 
-namespace apiRequestor;
+namespace ApiRequestor;
 
 public class CertifiedHandler : HttpClientHandler
 {

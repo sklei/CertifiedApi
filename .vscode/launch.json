@@ -13,7 +13,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/api/bin/Debug/net7.0/AspApi.dll",
+            "program": "${workspaceFolder}/api/bin/Debug/net7.0/Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/api",
             "stopAtEntry": false,

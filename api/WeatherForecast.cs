@@ -1,4 +1,4 @@
-namespace AspApi;
+namespace Api;
 
 public class WeatherForecast
 {

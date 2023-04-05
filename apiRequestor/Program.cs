@@ -1,6 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 
-using apiRequestor;
+using ApiRequestor;
 
 var builder = WebApplication.CreateBuilder(args);
 

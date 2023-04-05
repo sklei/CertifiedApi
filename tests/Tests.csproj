@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\api\AspApi.csproj" />
+    <ProjectReference Include="..\Api\Api.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,7 @@
 using System.Text.Json;
-using AspApi;
-
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace AspApi;
+namespace Api;
 
 public class ProductsControllerTests : IClassFixture<WebApplicationFactory<Program>>
 {
@@ -15,7 +13,7 @@ public class ProductsControllerTests : IClassFixture<WebApplicationFactory<Progr
     }
 
     [Fact]
-    public async Task GetProducts_Returns_Correct_Number_Of_Products()
+    public async Task GetWeather()
     {
         // Arrange
         var client = _factory.CreateClient();

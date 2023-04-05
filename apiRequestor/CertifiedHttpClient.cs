@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
-namespace apiRequestor;
+namespace ApiRequestor;
 
 public class CertifiedHttpClient : HttpClient
 {
@@ -12,7 +12,7 @@ public class CertifiedHttpClient : HttpClient
         _httpClient = httpClient;
     }
 
-    public Task<HttpResponseMessage> GetAsync([StringSyntax("Uri")] string? requestUri, CancellationToken cancellationToken)
+    public new Task<HttpResponseMessage> GetAsync([StringSyntax("Uri")] string? requestUri, CancellationToken cancellationToken)
     {
         return _httpClient.GetAsync(requestUri, cancellationToken);
     }

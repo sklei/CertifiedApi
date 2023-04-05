@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
-namespace apiRequestor.Controllers;
+namespace ApiRequestor.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
