@@ -1,0 +1,22 @@
+# We've got two APIs:
+# https://demosite.local:7246/
+# This is de API that requires certificates.
+# 
+# https://demosite.local:7222/
+# This is the API that makes the request with includes Client Certificate (or without).
+# 
+# To use this file you need: Name: REST Client https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+# Basic request, should work
+GET https://demosite.local:7222/api/CertTest/withcert
+
+###
+
+# Request without cert, won't work
+GET https://demosite.local:7222/api/CertTest/withoutcert
+
+###
+
+# Does two requests, first one works, second one fails: thus making the call fail
+# Important part is that the second request doesn't still send the certifacte from the first one
+GET https://demosite.local:7222/api/CertTest/withandwithoutcert
