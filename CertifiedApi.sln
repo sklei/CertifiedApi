@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{8AE88FB6-B538-4F08-B715-13D1A79E7A4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{6B38998B-6D85-42B3-9D8B-B99A3031BF63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration", "Tests\Integration\Integration.csproj", "{6B38998B-6D85-42B3-9D8B-B99A3031BF63}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiRequestor", "ApiRequestor\ApiRequestor.csproj", "{35814A16-7645-42A5-87EE-06171BC58F3A}"
 EndProject

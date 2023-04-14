@@ -1,5 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
-
 using ApiRequestor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,3 +27,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Make program visible for testing
+public partial class Program { }
