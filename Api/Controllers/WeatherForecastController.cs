@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -18,11 +19,17 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet()]
+    public IEnumerable<WeatherForecast> Get() => GetWeatherForecasts();
+
+    [Authorize]
+    [HttpGet("/authenticated")]
+    public IEnumerable<WeatherForecast> GetAuthorized() => GetWeatherForecasts();
+
+    private IEnumerable<WeatherForecast> GetWeatherForecasts()
     {
         _logger.LogDebug("Getting the weather!");
-        
+
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

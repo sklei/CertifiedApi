@@ -4,75 +4,78 @@ using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace Api;
 
-builder.Services.Configure<KestrelServerOptions>(options =>
+public class Program
 {
-    options.ConfigureHttpsDefaults(options =>
+    public static void Main(string[] args)
     {
-        options.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
-        options.OnAuthenticate = (connectionContext, sslServerAuthenticationOptions) =>
-        {
-            // Configure SSL options per request here...
-        };
-        options.ClientCertificateValidation = (cert, chain, policyErrors) =>
-        {
-            // Just accept any certificate, but it must be present. Otherwise this method won't ever be called.
-            return true;
-        };
-    });
-});
+        var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services
-    .AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
-    .AddCertificate(options =>
-    {
-        options.AllowedCertificateTypes = CertificateTypes.SelfSigned;
-        options.ValidateCertificateUse = false;
-        options.Events = new CertificateAuthenticationEvents
-        {
-            OnAuthenticationFailed = context =>
+        // This is completely ignore by the TestServer...
+        builder.Services.Configure<KestrelServerOptions>(options => options.ConfigureHttpsDefaults(options =>
             {
-                context.Fail("Invalid certificate");
-                return Task.CompletedTask;
-            },
-            OnCertificateValidated = context =>
-            {
-                // When a certificate is valid we can base our Principal (our authenticated entity) on the certificate (and other info that we need).
-                var claims = new[]
+                options.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
+                options.OnAuthenticate = (connectionContext, sslServerAuthenticationOptions) =>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
-                    new Claim(ClaimTypes.Name, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+                    // Configure SSL options per request here...
                 };
+                options.ClientCertificateValidation = (cert, chain, policyErrors) =>
+                {
+                    // Just accept any certificate, but it must be present. Otherwise this method won't ever be called.
+                    return true;
+                };
+            }));
 
-                context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
-                context.Success();
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
-                return Task.CompletedTask;
-            }
-        };
-    });
+        builder.Services
+            .AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
+            .AddCertificate(options =>
+            {
+                options.AllowedCertificateTypes = CertificateTypes.SelfSigned;
+                options.ValidateCertificateUse = false;
+                options.Events = new CertificateAuthenticationEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        context.Fail("Invalid certificate");
+                        return Task.CompletedTask;
+                    },
+                    OnCertificateValidated = context =>
+                    {
+                        // When a certificate is valid we can base our Principal (our authenticated entity) on the certificate (and other info that we need).
+                        var claims = new[]
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                            new Claim(ClaimTypes.Name, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+                        };
 
-var app = builder.Build();
+                        context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
+                        context.Success();
 
-app.UseAuthentication();
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        var app = builder.Build();
+
+        app.UseAuthentication();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-
-app.Run();
-
-// Make program visible for testing
-public partial class Program { }
